@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Rufina:wght@400;700&display=swap');
+
+*{
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+  background-color: #EFEEE5;
+}
+
+html, 
+body{
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  width: 100%;
+  max-width: 1140px;
+}
+
+.main-heading {
+  font-family: 'Rufina', serif;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #CFCDB4;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #034729;
+}
+
+.custom-css-sweetalert-title{
+  color: #034729;
+  background-color: #fff;
+  font-family: 'Rufina', serif;
+  font-size: 44px !important;
+}
+
+.custom-css-confirm-button{
+  background-color: #034729 !important;
+  color: #fff;
+  outline: none !important;
+  border: none !important;
+}
+
+
+@media (max-width: 575.98px) {
+  .container {
+    max-width: 685.98px;
+  }
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 878px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1134px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1381px;
+  }
+}
+@media (min-width: 1563px) {
+  .container {
+    max-width: 1635px;
+  }
+}
