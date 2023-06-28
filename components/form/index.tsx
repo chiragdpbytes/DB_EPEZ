@@ -24,30 +24,31 @@ const Index = () => {
     
 <form>
     <div className="grid gap-6 mb-6 lg:grid-cols-4 sm:grid-cols-2">
-        <div>
+        <div className='h-24'>
             <label htmlFor="first_name" className="block mb-4 text-base font-semibold text-[#034729]">First Name</label>
             <input type="text" id="first_name" className="bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4" placeholder="e.g. Meet"/>
+            {/* <span className='text-red-500 text-base'>Please enter your first name</span> */}
         </div>
-        <div>
+        <div className='h-24'>
             <label htmlFor="last_name" className="block mb-4 text-base font-semibold text-[#034729]">Last Name</label>
             <input type="text" id="last_name" className="bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4" placeholder="e.g. Patel"/>
         </div>
-        <div>
+        <div className='h-24'>
             <label htmlFor="age" className="block mb-4 text-base font-semibold text-[#034729]">Age</label>
             <div className='flex'>
                 <span className="inline-flex items-center px-5 text-sm text-[#AAA895] bg-[#E2E1D3] border border-r-0 border-[#CFCDB4] rounded-l-md">00</span>
                 <input type="date" id="age" className="bg-transparent border border-[#CFCDB4] text-[#AAA895] font-normal text-sm rounded-none rounded-r-lg focus:outline-none focus:border-[#034729] block w-full p-4"/>
             </div>
         </div>
-        <div>
+        <div className='h-24'>
             <label htmlFor="gender" className="block mb-4 text-base font-semibold text-[#034729]">Gender</label>
             <div className='flex'>
-                <div onClick={() => setGender("male")} className={`${gender === 'male' ? 'bg-[#034729] text-white' : 'text-[#AAA895]' } border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Male</div>
-                <div onClick={() => setGender("female")} className={`${gender === 'female' ? 'bg-[#034729] text-white' : 'text-[#AAA895]' }  border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Female</div>
+                <div onClick={() => setGender("male")} className={`${gender === 'male' ? 'bg-[#034729] text-white' : 'text-[#AAA895]' } border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-1 cursor-pointer`}>Male</div>
+                <div onClick={() => setGender("female")} className={`${gender === 'female' ? 'bg-[#034729] text-white' : 'text-[#AAA895]' }  border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-1 cursor-pointer`}>Female</div>
                 <div onClick={() => setGender("others")} className={`${gender === 'others' ? 'bg-[#034729] text-white' : 'text-[#AAA895]' }  border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 cursor-pointer`}>Others</div>
             </div>
         </div>
-        <div className='relative'>
+        <div className='relative h-24'>
             <label htmlFor="state" className="block mb-4 text-base font-semibold text-[#034729]">State</label>
             <button onClick={handleStateToggleDropdown} id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" data-dropdown-placement="bottom" 
             className="bg-transparent border relative border-[#CFCDB4] text-[#AAA895] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] text-center inline-flex items-center w-full p-4" type="button">e.g Gujarat <svg className="w-4 h-4 ml-auto" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
@@ -98,7 +99,7 @@ const Index = () => {
                 )
             }
         </div>
-        <div className='relative'>
+        <div className='relative h-24'>
             <label htmlFor="city" className="block mb-4 text-base font-semibold text-[#034729]">City</label>
             <button onClick={handleCityToggleDropdown} id="dropdownSearchButton" data-dropdown-toggle="dropdownSearch" data-dropdown-placement="bottom" 
             className="bg-transparent border relative border-[#CFCDB4] text-[#AAA895] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] text-center inline-flex items-center w-full p-4" type="button">e.g Ahmedabad <svg className="w-4 h-4 ml-auto" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
@@ -149,11 +150,11 @@ const Index = () => {
                 )
             }
         </div>
-        <div>
+        <div className='h-24'>
             <label htmlFor="pincode" className="block mb-4 text-base font-semibold text-[#034729]">Pincode</label>
             <input type="text" id="pincode" className="bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4" placeholder="e.g. 380051"/>
         </div>
-        <div>
+        <div className='h-24'>
             <label htmlFor="mobile_no" className="block mb-4 text-base font-semibold text-[#034729]">Mobile No</label>
             <div className='relative'>
                 <input type="text" id="first_name" className="bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16" placeholder="e.g. Meet"/>
@@ -163,19 +164,22 @@ const Index = () => {
             </div>
         </div>
     </div>
-    <div className="flex items-center justify-center w-full mb-6 z-10">
-        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-40 border-2 border-[#034729] border-dashed rounded-lg cursor-pointer bg-transparent">
-            <div className="flex flex-col items-center justify-center pt-5 pb-5">
-                <img src="./images/upload.svg" alt="upload" className='mb-4'/>
-                <p className="font-semibold text-[#034729]">Drag your files from device or Upload</p>
-                <p className="text-sm text-[#AAA895]">Max Upload size 7-8 MB</p>
-            </div>
-            <input id="dropzone-file" type="file" className="hidden" />
-        </label>
-    </div> 
+    <div>
+        <label htmlFor="add_photo" className="block mb-4 text-base font-semibold text-[#034729]">Add Photo</label>
+        <div className="flex items-center justify-center w-full mb-6 z-10">
+            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-40 border-2 border-[#034729] border-dashed rounded-lg cursor-pointer bg-transparent">
+                <div className="flex flex-col items-center justify-center mb-1">
+                    <img src="./images/upload.svg" alt="upload" className='mb-4'/>
+                    <p className="font-semibold text-[#034729]">Drag your files from device or Upload</p>
+                    <p className="text-sm text-[#AAA895]">Max Upload size 7-8 MB</p>
+                </div>
+                <input id="dropzone-file" type="file" className="hidden" />
+            </label>
+        </div> 
+    </div>
     <div className='flex justify-end'>
-        <button type="reset" className="text-[#AAA895] font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-[#034729] hover:text-white">Reset</button>
-        <button type="button" onClick={handleClick} className="text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-medium rounded-lg text-sm px-5 py-2.5 mb-2">Save to Continue</button>
+        <button type="reset" className="text-[#AAA895] font-medium rounded-lg text-sm px-5 py-4 mr-2 mb-2 hover:bg-[#034729] hover:text-white">Reset</button>
+        <button type="button" onClick={handleClick} className="text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-medium rounded-lg text-sm px-5 py-4 mb-2">Save to Continue</button>
     </div>
 </form>
 
