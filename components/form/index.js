@@ -115,7 +115,7 @@ const Index = () => {
     };
 
     const handleClick = () => {
-        SweetAlert.success("Thank you for adding your response", "./images/logo.svg")
+        SweetAlert.success("Thank you for adding your response", "../../../epez-loader.gif")
     };
 
     const ageCalculation = (e) => {
@@ -128,19 +128,11 @@ const Index = () => {
         setAge(Math.abs(year - 1970));
         { age == NaN ? setAge("00") : null }
     }
-    const onSubmit = data => { }
-
-   
-
-
-
-
+    const onSubmit = data => { 
+        setLoading(true)
+    }
 
     return (
-
-        // <link rel="preconnect" href="https://fonts.googleapis.com">
-        // <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        // <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Rufina:wght@700&display=swap" rel="stylesheet"></link>
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-6 mb-6 lg:grid-cols-4 sm:grid-cols-2">
                 {/* <div>
@@ -159,7 +151,7 @@ const Index = () => {
                         {...register("firstName", { required: true })}
                         className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4"
                         placeholder="e.g. Meet" />
-                    <div className='invalid-feedback' style={{ display: 'block' }}>{errors.firstName && <p style={{ color: 'red' }}>First Name is required</p>}</div>
+                    <div className='invalid-feedback' style={{ display: 'block' }}>{errors.firstName && <p style={{ color: '#e50000' }}>First Name is required</p>}</div>
                 </div>
                 <div className='relative'>
                     <label
@@ -173,28 +165,40 @@ const Index = () => {
                         placeholder="e.g. Patel"
 
                     />
-                    <div className='invalid-feedback' style={{ display: 'block' }}>{errors.lastName && <p style={{ color: 'red' }}>Last Name is required</p>}</div>
-
+                    <div className='invalid-feedback' style={{ display: 'block' }}>{errors.lastName && <p style={{ color: '#e50000' }}>Last Name is required</p>}</div>
                 </div>
                 <div className='relative'>
                     <label htmlFor="age" className="block mb-4 text-base font-semibold text-[#034729]">Age</label>
                     <div className='flex'>
-                        <span className="age-count inline-flex items-center px-5 text-sm text-[#AAA895] bg-[#E2E1D3] border border-r-0 border-[#CFCDB4] rounded-l-md">{age}</span>
+                        <span className="age-count inline-flex items-center px-5 text-sm text-[#AAA895] bg-[#E2E1D3] border-transparent rounded-l-md">{age}</span>
                         <input 
                             type="date"
                             id="age"
                             name='dob'
                             max={new Date().toISOString().split("T")[0]}
                             onChange={(e) => { ageCalculation(e) }}
-                            className="input-field bg-transparent border border-[#CFCDB4] border-l-0 text-[#AAA895] font-normal text-sm rounded-none rounded-r-lg focus:outline-none focus:border-[#034729] block w-full p-4" />
+                            className="input-field bg-transparent border border-[#CFCDB4] text-[#AAA895] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pl-16" />
                     </div>
                 </div>
                 <div className='relative'>
                     <label htmlFor="gender" className="block mb-4 text-base font-semibold text-[#034729]">Gender</label>
                     <div className='flex gender-select'>
-                        <div onClick={() => setGender("male")} className={`${gender === 'male' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Male</div>
+                        {/* <div onClick={() => setGender("male")} className={`${gender === 'male' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Male</div>
                         <div onClick={() => setGender("female")} className={`${gender === 'female' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Female</div>
-                        <div onClick={() => setGender("others")} className={`${gender === 'others' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 cursor-pointer`}>Others</div>
+                        <div onClick={() => setGender("others")} className={`${gender === 'others' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 cursor-pointer`}>Others</div> */}
+
+                        <label class="rounded-0 text-white">
+                            <input type="radio" name="toggle" class="d-none" checked onClick={() => setGender("Male")} />
+                            <span class="text-center d-block py-3">Male</span>
+                        </label>
+                        <label class="rounded-0 text-white">
+                            <input type="radio" name="toggle" class="d-none" onClick={() => setGender("Female")} />
+                            <span class="text-center d-block py-3">Female</span>
+                        </label>
+                        <label class="rounded-0 text-white">
+                            <input type="radio" name="toggle" class="d-none" onClick={() => setGender("Others")} />
+                            <span class="text-center d-block py-3">Others</span>
+                        </label>
                     </div>
                 </div>
                 <div className='relative'>
@@ -214,40 +218,11 @@ const Index = () => {
 
                 </div>
 
-                {/* <div className='relative'>
-                    <label htmlFor="cty" className="block mb-4 text-base font-semibold text-[#034729]">City</label>
-
-                    <Select
-                        placeholder="select state value"
-                        // setStateValue
-                        // onChange={(e) => setStateValue({name: e?.name, id: e.id})}
-                        options={city}
-                        components={{
-                            IndicatorSeparator: () => null,
-                        }}
-                        styles={{
-                            control: () => ({
-                                padding: "2px 10px 2px 21px",
-                                height: "56px",
-                                display: "flex",
-                                border: "1px solid #D1D2D3",
-                                borderRadius: "8px",
-                                fontSize: "14px",
-                                lineHeight: "28px",
-                            }),
-                            placeholder: (styles) => ({
-                                ...styles,
-                                color: "#B2B3B5",
-                            }),
-                        }}
-                    />
-                </div> */}
-
                 <div className='relative'>
                     <label htmlFor="cty" className="block mb-4 text-base font-semibold text-[#034729]">City</label>
 
                     <Select
-                        placeholder="select state value"
+                        placeholder="select city value"
                         className="stylingSelect"
                         options={cityValues}
                         components={{
@@ -266,23 +241,23 @@ const Index = () => {
                         {...register("pincode", {
                             required: {
                                 value: true,
-                                message: "Please add your pincode "
+                                message: "Pincode is required"
                             },
                             // pattern: {
                             //     value: /^[0-9+-]+$/,
                             //     message: "This is not a valid pincode to me, try again!"
                             // },
                             minLength: {
-                                value: 10,
-                                message: "This pincode is too short, not gotta fly, try again"
+                                value: 6,
+                                message: "Pincode is too short"
                             },
                             maxLength: {
-                                value: 10,
-                                message: "...And now it's too damn long, make sure the number is right, would you?"
+                                value: 6,
+                                message: "Now it's too damn long"
                             }
                         })} className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4" placeholder="e.g. 380051" />
                     <div className='invalid-feedback' style={{ display: 'block' }}>
-                        {errors.pincode && <p style={{ color: 'red' }}>{errors?.pincode?.message}</p>}
+                        {errors.pincode && <p style={{ color: '#e50000' }}>{errors?.pincode?.message}</p>}
                     </div>
                 </div>
                 <div className='relative'>
@@ -300,7 +275,7 @@ const Index = () => {
                             {...register("mobileNo", {
                                 required: {
                                     value: true,
-                                    message: "Please add your mobile phone number, I won't call you, promise!"
+                                    message: "Mobile number is required"
                                 },
                                 // pattern: {
                                 //     value: /^[0-9+-]+$/,
@@ -308,11 +283,11 @@ const Index = () => {
                                 // },
                                 minLength: {
                                     value: 10,
-                                    message: "This number is too short, not gotta fly, try again"
+                                    message: "Mobile number is too short"
                                 },
                                 maxLength: {
                                     value: 10,
-                                    message: "...And now it's too damn long, make sure the number is right, would you?"
+                                    message: "Now it's too damn long"
                                 }
                             })}
                             className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16" placeholder="e.g. Meet" />
@@ -321,25 +296,38 @@ const Index = () => {
                         </div>
                     </div>
                     <div className='invalid-feedback' style={{ display: 'block' }}>
-                        {errors.mobileNo && <p style={{ color: 'red' }}>{errors?.mobileNo?.message}</p>}
+                        {errors.mobileNo && <p style={{ color: '#e50000' }}>{errors?.mobileNo?.message}</p>}
                     </div>
                 </div>
             </div>
-            <div className="flex flex-wrap items-center justify-center w-full mb-6 z-10">
+            <div className="file-upload-wrap flex flex-wrap items-center justify-center w-full mb-6 z-10">
                 <label className="w-full block mb-4 text-base font-semibold text-[#034729]">Add Photo</label>
                 <label htmlFor="dropzone-file" className="relative flex flex-col items-center justify-center w-full h-40 border-l border-t border-r border-b border-[#034729] border-dashed rounded-lg cursor-pointer bg-transparent p-2 p-3">
                     <div className="flex flex-col items-center justify-center pt-5 pb-5">
                         <img src="../../../Upload.svg" alt="upload" className='mb-4' />
                         <p className="font-semibold text-[#034729]">Drag your files from device or <u>Upload</u></p>
                         <p className="text-sm text-[#AAA895]">Max upload size upto 10 MB</p>
-                        <p className="text-sm text-[#AAA895] h-5 overflow-hidden">man-enjoying-indoor-farming.jpg</p>
+                        {/* <p className="text-sm text-[#AAA895] h-5 overflow-hidden">man-enjoying-indoor-farming.jpg</p> */}
                     </div>
                     <input id="dropzone-file" type="file" className="absolute w-full h-full opacity-0" />
+                    {/* <div className='file-upload-load'>
+                        <img src="../../../epez-loader.gif" alt="File Upload Loader" />
+                    </div> */}
                 </label>
             </div>
-            <div className='flex justify-end'>
+            <div className='flex justify-end form-btn'>
                 <button type="reset" className="text-[#AAA895] font-medium rounded-lg text-base px-5 py-2.5 mr-2 mb-2 hover:bg-[#034729] hover:text-white">Reset</button>
-                <button type="submit" onClick={handleClick} className="text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2">Save to Continue</button>
+
+                {
+                    !loading ?  <button type="submit" onClick={handleClick} className="text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2">Save to Continue</button> :  <button disabled type="button" class="text-white bg-[#034729] rounded-lg border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2">
+                    <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#ffffff"/>
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#50BFA5"/>
+                    </svg>
+                    Loading...
+                </button>
+                }      
+                         
             </div>
         </form>
 
