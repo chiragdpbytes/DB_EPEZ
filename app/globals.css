@@ -7,7 +7,8 @@
   margin: 0%;
   padding: 0%;
   box-sizing: border-box;
-  background-color: #EFEEE5;
+  /* background-color: #EFEEE5; */
+  background-color: transparent;
 }
 
 html, 
@@ -18,14 +19,16 @@ body{
 .container {
   margin-right: auto;
   margin-left: auto;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 16px;
+  padding-left: 16px;
   width: 100%;
-  max-width: 1140px;
+  max-width: 94.167vw;
 }
 
 .main-heading {
   font-family: 'Rufina', serif;
+  line-height: 44px;
+  letter-spacing: 1px;
 }
 
 .scrollbar-custom::-webkit-scrollbar {
@@ -52,40 +55,4 @@ body{
   color: #fff;
   outline: none !important;
   border: none !important;
-}
-
-
-@media (max-width: 575.98px) {
-  .container {
-    max-width: 685.98px;
-  }
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 750px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 878px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1134px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1381px;
-  }
-}
-@media (min-width: 1563px) {
-  .container {
-    max-width: 1635px;
-  }
 }
