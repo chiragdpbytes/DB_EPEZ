@@ -23,7 +23,7 @@ export default function Home() {
     <div className='container'>
       <div className='flex justify-between mt-4 mb-6'>
         <img src="./logo.svg" alt="logo"/>
-        <div className='flex items-center gap-5 cursor-pointer'>
+        <div className='language-select flex items-center gap-5 cursor-pointer'>
           {/* <span className='text-base font-semibold	text-[#034729]'>English</span> */}
           <Select
             className="basic-single text-base font-semibold	text-[#034729]"

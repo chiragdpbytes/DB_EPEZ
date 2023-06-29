@@ -4,6 +4,36 @@ import { useForm } from 'react-hook-form';
 import Select from 'react-select';
 import axios from 'axios';
 
+const colourStyles = {
+    control: (base) => ({
+      ...base,
+      height: 54,
+      minHeight: 54,
+    }),
+  
+    option: (styles, { isDisabled, isFocused, isSelected }) => {
+      return {
+        ...styles,
+        backgroundColor: isFocused ? "#034729" : isSelected ? "#3d976f" : null,
+        color: isFocused ? "#fff " : isSelected ? "#fff !important" : null,
+        cursor: isDisabled ? "not-allowed" : "default",
+  
+        // control: (base, state) => ({
+        //   ...base,
+        //   border: "1px solid black",
+        //   boxShadow: "none !important",
+        //   "&:hover": {
+        //     border: "1px solid black",
+        //   },
+        // }),
+  
+        placeholder: (styles) => ({
+          ...styles,
+          color: "#B2B3B5",
+        }),
+      };
+    },
+  };
 
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -16,11 +46,13 @@ const Index = () => {
     const [isOpenCity, setIsOpenCity] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [stateData, setStateData] = useState("");
+    const [stateAndCityData, setStateAndCity] = useState("");
     const [selectStatesData, setSelectStatesData] = useState();
     const [stateValue, setStateValue] = useState();
     const [city, setCity] = useState();
-
+    const [cityValues, setCityValues] = useState();
+    console.log("cityValues",cityValues);
+    const [age, setAge] = useState("00");
     // Form Values
     const [firstName, setfirstName] = useState("");
     const [lastName, setlastName] = useState("");
@@ -36,30 +68,43 @@ const Index = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
 
-    // useEffect(() => {
-    //     axios
-    //         .get(`http://192.168.10.150:8000/api/state-city`)
-    //         .then((response) => {
-    //             return response.data;
-    //         })
-    //         .then((data) => {
-    //             setStateData(data?.data);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error.response.data.error);
-    //         });
-    // }, []);
+    useEffect(() => {
+        axios
+            .get(`https://ekpedekzindgi.demo1.bytestechnolab.com/api/state-city`)
+            .then((response) => {
+                return response.data;
+            })
+            .then((data) => {
+                setStateAndCity(data?.data);
+            })
+            .catch((error) => {
+                console.log(error.response.data.error);
+            });
+    }, []);
 
     useEffect(() => {
-
-        if (stateData && stateData.length > 0) {
+        if (stateAndCityData && stateAndCityData.length > 0) {
             var temp = [];
-            stateData?.map((data) => {
+            stateAndCityData?.map((data) => {
                 temp.push({ value: data?.name, label: data?.name, id: data?.id });
             });
             setSelectStatesData(temp);
         }
-    }, [stateData]);
+        if (stateValue) {
+            for (let i in stateAndCityData) {
+                if (stateAndCityData[i]?.id === stateValue?.id) {
+                    setCity(stateAndCityData[i]?.city);
+                }
+            }
+        }
+        if (city) {
+            var temp = [];
+            for (let i in city) {
+                temp.push({ value: city[i]?.name, label: city[i]?.name });
+            }
+            setCityValues(temp);
+        }
+    }, [stateAndCityData, stateValue, city]);
 
     const handleStateToggleDropdown = () => {
         setIsOpenState(!isOpenState);
@@ -73,32 +118,29 @@ const Index = () => {
         SweetAlert.success("Thank you for adding your response", "./images/logo.svg")
     };
 
+    const ageCalculation = (e) => {
+
+        setdateofbirth(e.target.value);
+        var dob = new Date(e.target.value);
+        var month_diff = Date.now() - dob.getTime();
+        var age_dt = new Date(month_diff);
+        var year = age_dt.getUTCFullYear();
+        setAge(Math.abs(year - 1970));
+        { age == NaN ? setAge("00") : null }
+    }
     const onSubmit = data => { }
 
-    const handleChange_age = (event) => {
-        console.log("DOB:", event.target.value);
-
-        this.setState({ dob1: event.target.value }, () => {
-            // example of setState callback
-            // this will have the latest this.state.dob1
-            console.log(this.state.dob1);
-        })
-
-        // call calculate_age with event.target.value
-        var age_latest = { age_latest: this.calculate_age(event.target.value) }
-        console.log(age_latest);
-
-        this.setState({ age1: age_latest }, () => {
-            // this will have the latest this.state.age1
-            console.log("Age:", this.state.age1);
-        })
-    }
+   
 
 
 
 
 
     return (
+
+        // <link rel="preconnect" href="https://fonts.googleapis.com">
+        // <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        // <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Rufina:wght@700&display=swap" rel="stylesheet"></link>
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-6 mb-6 lg:grid-cols-4 sm:grid-cols-2">
                 {/* <div>
@@ -108,18 +150,18 @@ const Index = () => {
         options={options}
       />
         </div> */}
-                <div>
+                <div className='relative'>
                     <label htmlFor="first_name" className="block mb-4 text-base font-semibold text-[#034729]">First Name</label>
                     <input
                         type="text"
                         id="first_name"
                         name="firstName"
                         {...register("firstName", { required: true })}
-                        className="bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4"
+                        className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4"
                         placeholder="e.g. Meet" />
-                    <div className='invalid-feedback' style={{ display: 'block' }}>{errors.firstName && <p style={{ color: 'red' }}>first Name is required</p>}</div>
+                    <div className='invalid-feedback' style={{ display: 'block' }}>{errors.firstName && <p style={{ color: 'red' }}>First Name is required</p>}</div>
                 </div>
-                <div>
+                <div className='relative'>
                     <label
                         htmlFor="last_name" className="block mb-4 text-base font-semibold text-[#034729]">Last Name</label>
                     <input
@@ -127,67 +169,53 @@ const Index = () => {
                         id="first_name"
                         name="lastName"
                         {...register("lastName", { required: true })}
-                        className="bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4"
+                        className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4"
                         placeholder="e.g. Patel"
 
                     />
                     <div className='invalid-feedback' style={{ display: 'block' }}>{errors.lastName && <p style={{ color: 'red' }}>Last Name is required</p>}</div>
 
                 </div>
-                <div>
+                <div className='relative'>
                     <label htmlFor="age" className="block mb-4 text-base font-semibold text-[#034729]">Age</label>
                     <div className='flex'>
-                        <span className="inline-flex items-center px-5 text-sm text-[#AAA895] bg-[#E2E1D3] border border-r-0 border-[#CFCDB4] rounded-l-md">00</span>
-                        <input
+                        <span className="age-count inline-flex items-center px-5 text-sm text-[#AAA895] bg-[#E2E1D3] border border-r-0 border-[#CFCDB4] rounded-l-md">{age}</span>
+                        <input 
                             type="date"
                             id="age"
                             name='dob'
-                            onChange={(dob) => calculate_age(dob)}
-                            {...register("dob", { required: true })}
-                            className="bg-transparent border border-[#CFCDB4] text-[#AAA895] font-normal text-sm rounded-none rounded-r-lg focus:outline-none focus:border-[#034729] block w-full p-4" />
+                            max={new Date().toISOString().split("T")[0]}
+                            onChange={(e) => { ageCalculation(e) }}
+                            className="input-field bg-transparent border border-[#CFCDB4] border-l-0 text-[#AAA895] font-normal text-sm rounded-none rounded-r-lg focus:outline-none focus:border-[#034729] block w-full p-4" />
                     </div>
                 </div>
-                <div>
+                <div className='relative'>
                     <label htmlFor="gender" className="block mb-4 text-base font-semibold text-[#034729]">Gender</label>
-                    <div className='flex'>
-                        <div onClick={() => setGender("male")} className={`${gender === 'male' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Male</div>
-                        <div onClick={() => setGender("female")} className={`${gender === 'female' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'}  border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Female</div>
-                        <div onClick={() => setGender("others")} className={`${gender === 'others' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'}  border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 cursor-pointer`}>Others</div>
+                    <div className='flex gender-select'>
+                        <div onClick={() => setGender("male")} className={`${gender === 'male' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Male</div>
+                        <div onClick={() => setGender("female")} className={`${gender === 'female' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Female</div>
+                        <div onClick={() => setGender("others")} className={`${gender === 'others' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 cursor-pointer`}>Others</div>
                     </div>
                 </div>
-                <div>
+                <div className='relative'>
                     <label htmlFor="state" className="block mb-4 text-base font-semibold text-[#034729]">State</label>
 
                     <Select
                         placeholder="select state value"
+                        className="stylingSelect"
                         // setStateValue
-                        onChange={(e) => setStateValue({ name: e?.name, id: e.id })}
+                        onChange={(e) => setStateValue({name: e?.name, id: e.id})}
                         options={selectStatesData}
                         components={{
-                            IndicatorSeparator: () => null,
+                        IndicatorSeparator: () => null,
                         }}
-                        styles={{
-                            control: () => ({
-                                padding: "2px 10px 2px 21px",
-                                height: "54px",
-                                display: "flex",
-                                border: "1px solid #D1D2D3",
-                                borderRadius: "8px",
-                                fontSize: "14px",
-                                lineHeight: "28px",
-                            }),
-                            placeholder: (styles) => ({
-                                ...styles,
-                                color: "#B2B3B5",
-                            }),
-                        }}
+                        styles={colourStyles}
                     />
 
                 </div>
-                
 
-                <div>
-                <label htmlFor="cty" className="block mb-4 text-base font-semibold text-[#034729]">City</label>
+                {/* <div className='relative'>
+                    <label htmlFor="cty" className="block mb-4 text-base font-semibold text-[#034729]">City</label>
 
                     <Select
                         placeholder="select state value"
@@ -200,7 +228,7 @@ const Index = () => {
                         styles={{
                             control: () => ({
                                 padding: "2px 10px 2px 21px",
-                                height: "54px",
+                                height: "56px",
                                 display: "flex",
                                 border: "1px solid #D1D2D3",
                                 borderRadius: "8px",
@@ -213,8 +241,23 @@ const Index = () => {
                             }),
                         }}
                     />
+                </div> */}
+
+                <div className='relative'>
+                    <label htmlFor="cty" className="block mb-4 text-base font-semibold text-[#034729]">City</label>
+
+                    <Select
+                        placeholder="select state value"
+                        className="stylingSelect"
+                        options={cityValues}
+                        components={{
+                            IndicatorSeparator: () => null,
+                        }}
+                        styles={colourStyles}
+
+                    />
                 </div>
-                <div>
+                <div className='relative'>
                     <label htmlFor="pincode" className="block mb-4 text-base font-semibold text-[#034729]">Pincode</label>
                     <input
                         type="number"
@@ -237,14 +280,16 @@ const Index = () => {
                                 value: 10,
                                 message: "...And now it's too damn long, make sure the number is right, would you?"
                             }
-                        })} className="bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4" placeholder="e.g. 380051" />
+                        })} className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4" placeholder="e.g. 380051" />
                     <div className='invalid-feedback' style={{ display: 'block' }}>
                         {errors.pincode && <p style={{ color: 'red' }}>{errors?.pincode?.message}</p>}
                     </div>
-
                 </div>
-                <div>
-                    <label htmlFor="mobile_no" className="block mb-4 text-base font-semibold text-[#034729]">Mobile No</label>
+                <div className='relative'>
+                    <div className='change-number-wrap flex justify-between'>
+                        <label htmlFor="mobile_no" className="block mb-4 text-base font-semibold text-[#034729]">Mobile No</label>
+                        <span className="change-number">Change Number</span>
+                    </div>
                     <div className='relative'>
                         <input
                             min={0}
@@ -270,31 +315,31 @@ const Index = () => {
                                     message: "...And now it's too damn long, make sure the number is right, would you?"
                                 }
                             })}
-                            className="bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16" placeholder="e.g. Meet" />
-                        <div className='invalid-feedback' style={{ display: 'block' }}>
-                            {errors.mobileNo && <p style={{ color: 'red' }}>{errors?.mobileNo?.message}</p>}
-                        </div>
+                            className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16" placeholder="e.g. Meet" />
                         <div className='absolute inset-y-0 right-0 flex items-center pl-3 bg-transparent text-[#AAA895] font-normal text-sm p-4 cursor-pointer underline'>
                             verify
                         </div>
                     </div>
-
+                    <div className='invalid-feedback' style={{ display: 'block' }}>
+                        {errors.mobileNo && <p style={{ color: 'red' }}>{errors?.mobileNo?.message}</p>}
+                    </div>
                 </div>
             </div>
-            <div className="flex items-center justify-center w-full mb-6 z-10">
-                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-40 border-2 border-[#034729] border-dashed rounded-lg cursor-pointer bg-transparent">
+            <div className="flex flex-wrap items-center justify-center w-full mb-6 z-10">
+                <label className="w-full block mb-4 text-base font-semibold text-[#034729]">Add Photo</label>
+                <label htmlFor="dropzone-file" className="relative flex flex-col items-center justify-center w-full h-40 border-l border-t border-r border-b border-[#034729] border-dashed rounded-lg cursor-pointer bg-transparent p-2 p-3">
                     <div className="flex flex-col items-center justify-center pt-5 pb-5">
                         <img src="../../../Upload.svg" alt="upload" className='mb-4' />
                         <p className="font-semibold text-[#034729]">Drag your files from device or <u>Upload</u></p>
                         <p className="text-sm text-[#AAA895]">Max upload size upto 10 MB</p>
-                        <p className="image-name text-[#AAA895]">man-enjoying-indoor-farming.jpg</p>
+                        <p className="text-sm text-[#AAA895] h-5 overflow-hidden">man-enjoying-indoor-farming.jpg</p>
                     </div>
-                    <input id="dropzone-file" type="file" className="hidden" />
+                    <input id="dropzone-file" type="file" className="absolute w-full h-full opacity-0" />
                 </label>
             </div>
             <div className='flex justify-end'>
-                <button type="reset" className="text-[#AAA895] font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 hover:bg-[#034729] hover:text-white">Reset</button>
-                <button type="submit" onClick={handleClick} className="text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-medium rounded-lg text-sm px-5 py-2.5 mb-2">Save to Continue</button>
+                <button type="reset" className="text-[#AAA895] font-medium rounded-lg text-base px-5 py-2.5 mr-2 mb-2 hover:bg-[#034729] hover:text-white">Reset</button>
+                <button type="submit" onClick={handleClick} className="text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2">Save to Continue</button>
             </div>
         </form>
 
