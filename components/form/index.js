@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Select from "react-select";
 import axios from "axios";
 import { apiconfig } from "./hooks/apiconfig";
+import locales from "../../locales";
 
 const colourStyles = {
   control: (base) => ({
@@ -32,7 +33,8 @@ const options = [
   { value: "vanilla", label: "Vanilla" },
 ];
 
-const Index = () => {
+const Index = (selectedLanguage) => {
+  const language = selectedLanguage.lang;
   const [loading, setLoading] = useState(false);
   const [stateAndCityData, setStateAndCity] = useState("");
   const [selectStatesData, setSelectStatesData] = useState();
@@ -41,9 +43,9 @@ const Index = () => {
   const [cityOptionValues, setCityOptionValues] = useState();
   const [cityValues, setCityValues] = useState();
   const [isDisabled, setIsDisabled] = useState(true);
-  const [age, setAge] = useState("00");
+  const [age, setAge] = useState("22");
   const [phoneNumber, setphoneNumber] = useState("");
-  const [dateofbirth, setdateofbirth] = useState("");
+  const [dateofbirth, setdateofbirth] = useState("2000-01-01");
   const [gender, setGender] = useState("Male");
   const [mobileVerify, setMobileVerify] = useState("");
   const [verify, setVerify] = useState(false);
@@ -52,12 +54,14 @@ const Index = () => {
   const [errorAge, setErrorAge] = useState("");
   const [errorState, setErrorState] = useState("");
   const [errorCity, setErrorCity] = useState("");
+  const [resetData, setResetData] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm();
 
   useEffect(() => {
@@ -151,7 +155,7 @@ const Index = () => {
     var month_diff = Date.now() - dob.getTime();
     var age_dt = new Date(month_diff);
     var year = age_dt.getUTCFullYear();
-    setAge(Math.abs(year - 1971));
+    setAge(Math.abs(year - 1970));
     {
       age == NaN ? setAge("1") : null;
     }
@@ -180,6 +184,10 @@ const Index = () => {
           return false;
         }
 
+        if (data?.data?.success === true) {
+          setResetData(true);
+        }
+
         SweetAlert.success(
           "Thank you for adding your response",
           "./epez-loader.gif"
@@ -189,6 +197,10 @@ const Index = () => {
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    reset();
+  }, [resetData]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -210,7 +222,7 @@ const Index = () => {
             htmlFor="first_name"
             className="block mb-4 text-base font-semibold text-[#034729]"
           >
-            First Name
+            {language.firstNameLabel}
           </label>
           <input
             type="text"
@@ -244,7 +256,7 @@ const Index = () => {
             htmlFor="last_name"
             className="block mb-4 text-base font-semibold text-[#034729]"
           >
-            Last Name
+            {language.lastNameLabel}
           </label>
           <input
             type="text"
@@ -278,7 +290,7 @@ const Index = () => {
             htmlFor="age"
             className="block mb-4 text-base font-semibold text-[#034729]"
           >
-            Age
+            {language.ageLabel}
           </label>
           <div className="flex">
             <span className="age-count inline-flex items-center px-5 text-sm text-[#AAA895] bg-[#E2E1D3] border-transparent rounded-l-md">
@@ -286,6 +298,7 @@ const Index = () => {
             </span>
             <input
               required
+              value={dateofbirth}
               type="date"
               id="age"
               name="dob"
@@ -308,7 +321,7 @@ const Index = () => {
             htmlFor="gender"
             className="block mb-4 text-base font-semibold text-[#034729]"
           >
-            Gender
+            {language.genderLabel}
           </label>
           <div className="flex gender-select">
             <label className="rounded-0 text-white">
@@ -348,7 +361,7 @@ const Index = () => {
             htmlFor="state"
             className="block mb-4 text-base font-semibold text-[#034729]"
           >
-            State
+            {language.stateLabel}
           </label>
 
           <Select
@@ -377,7 +390,7 @@ const Index = () => {
             htmlFor="cty"
             className="block mb-4 text-base font-semibold text-[#034729]"
           >
-            City
+            {language.cityLabel}
           </label>
 
           <Select
@@ -403,7 +416,7 @@ const Index = () => {
             htmlFor="pincode"
             className="block mb-4 text-base font-semibold text-[#034729]"
           >
-            Pincode
+            {language.pincodeLabel}
           </label>
           <input
             type="number"
@@ -439,12 +452,14 @@ const Index = () => {
               htmlFor="mobile_no"
               className="block mb-4 text-base font-semibold text-[#034729]"
             >
-              {verify == false ? "Mobile No" : "verification Code"}
+              {verify == false
+                ? `${language.mobileLabel}`
+                : `${language.verificationMobileLabel}`}
             </label>
 
             {verify == true ? (
               <span className="change-number" onClick={() => setVerify(false)}>
-                Change Number
+                {language.changeMobileLabel}
               </span>
             ) : null}
           </div>
@@ -505,7 +520,7 @@ const Index = () => {
       </div>
       <div className="file-upload-wrap flex flex-wrap items-center justify-center w-full mb-6 z-10">
         <label className="w-full block mb-4 text-base font-semibold text-[#034729]">
-          Add Photo
+          {language.photoLabel}
         </label>
         <label
           htmlFor="dropzone-file"
@@ -514,7 +529,7 @@ const Index = () => {
           <div className="flex flex-col items-center justify-center pt-5 pb-5">
             <img src="../../../Upload.svg" alt="upload" className="mb-4" />
             <p className="font-semibold text-[#034729]">
-              Drag your files from device or <u>Upload</u>
+              {language.uploadLabel} <u>{language.uploadLink}</u>
             </p>
             <p className="text-sm text-[#AAA895]">Max upload size upto 10 MB</p>
             {/* <p className="text-sm text-[#AAA895] h-5 overflow-hidden">man-enjoying-indoor-farming.jpg</p> */}
@@ -532,6 +547,9 @@ const Index = () => {
       </div>
       <div className="flex justify-end form-btn">
         <button
+          onClick={() => {
+            setResetData(true);
+          }}
           type="reset"
           className="text-[#AAA895] font-medium rounded-lg text-base px-5 py-2.5 mr-2 mb-2 hover:bg-[#034729] hover:text-white"
         >
