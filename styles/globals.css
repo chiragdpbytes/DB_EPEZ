@@ -56,7 +56,7 @@ body{
 .main-heading {
   font-family: 'Rufina', serif;
   line-height: 44px;
-  letter-spacing: 1px;
+  /* letter-spacing: 1px; */
   font-family: 'Rufina';
 }
 
@@ -227,6 +227,21 @@ body{
   background-color: #efeee5;
   border-radius: 8px;
 }
+.stylingSelect .css-1pi5gif-control > div,
+.stylingSelect > div:last-of-type > div{
+  padding-left: 14px;
+}
+.stylingSelect > div:last-of-type > div > div.css-1xc3v61-indicatorContainer,
+.stylingSelect > div:last-of-type > div > div.css-15lsz6c-indicatorContainer,
+.stylingSelect > div.css-1pi5gif-control > div > div.css-1xc3v61-indicatorContainer,
+.stylingSelect > div.css-1pi5gif-control > div > div.css-15lsz6c-indicatorContainer{
+  background: url(../public/down-arrow-icon.svg) no-repeat center 7px;
+  background-size: 24px;
+}
+.stylingSelect > div:last-of-type > div > div svg,
+.stylingSelect > div:last-of-type > div > div:first-child svg,
+.stylingSelect > div.css-1pi5gif-control > div > div svg,
+.stylingSelect > div.css-1pi5gif-control > div > div:first-child svg{opacity: 0 !important;}
 .stylingSelect > div:hover {
   border: 1px solid #cfcdb4;
 }
@@ -310,11 +325,16 @@ input[type=number] {
   line-height: 24px;
   letter-spacing: 0.5px;
 }
-
+.form-btn{
+  position: relative;
+  z-index: 9;
+}
 .form-btn button[type='submit']{
   letter-spacing: 0.5px;
 }
-
+footer{
+  margin-top: -60px;
+}
 
 @media (min-width: 1921px) {
   .container {
@@ -333,6 +353,9 @@ input[type=number] {
   }
   .swal2-popup .swal2-title{
     font-size: 29px !important;
+  }
+  footer {
+    margin-top: -20px;
   }
 }
 @media (max-width: 991px) {
@@ -410,6 +433,9 @@ input[type=number] {
   }
   .swal2-popup .swal2-image{
     width: 100px;
+  }
+  footer {
+    margin-top: 0px;
   }
 }
 @media (max-width: 580px) {

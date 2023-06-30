@@ -1,7 +1,7 @@
 // locales.js
 const locales = {
   en: {
-    logoLabel: "",
+    logoLabel: "./logo.svg",
     firstNameLabel: "First Name",
     lastNameLabel: "Last Name",
     ageLabel: "Age",
@@ -17,7 +17,7 @@ const locales = {
     verificationMobileLabel: "Verification Code",
   },
   hi: {
-    logoLabel: "",
+    logoLabel: "./logo.svg",
     firstNameLabel: "पहला नाम",
     lastNameLabel: "उपनाम",
     ageLabel: "आयु",
@@ -33,7 +33,7 @@ const locales = {
     verificationMobileLabel: "सत्यापन कोड",
   },
   gu: {
-    logoLabel: "",
+    logoLabel: "./gujarati-logo.svg",
     firstNameLabel: "મૂળ નામ",
     lastNameLabel: "છેલ્લું નામ",
     ageLabel: "ઉંમર",
@@ -49,7 +49,7 @@ const locales = {
     verificationMobileLabel: "ચકાસણી કોડ",
   },
   ma: {
-    logoLabel: "",
+    logoLabel: "./marathi-logo.svg",
     firstNameLabel: "पहिले नाव",
     lastNameLabel: "आडनाव",
     ageLabel: "वय",
