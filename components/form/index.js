@@ -503,7 +503,7 @@ const Index = () => {
           )}
         </div>
       </div>
-      <div className="file-upload-wrap flex flex-wrap items-center justify-center w-full mb-6 z-10">
+      <div className="file-upload-wrap flex flex-wrap items-center justify-center w-full mb-8 z-10">
         <label className="w-full block mb-4 text-base font-semibold text-[#034729]">
           Add Photo
         </label>
