@@ -3,6 +3,7 @@ import SweetAlert from "./hooks/SweetAlert";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
 import axios from "axios";
+import { apiconfig } from "./hooks/apiconfig";
 
 const colourStyles = {
   control: (base) => ({
@@ -17,16 +18,6 @@ const colourStyles = {
       backgroundColor: isFocused ? "#034729" : isSelected ? "#3d976f" : null,
       color: isFocused ? "#fff " : isSelected ? "#fff !important" : null,
       cursor: isDisabled ? "not-allowed" : "default",
-
-      // control: (base, state) => ({
-      //   ...base,
-      //   border: "1px solid black",
-      //   boxShadow: "none !important",
-      //   "&:hover": {
-      //     border: "1px solid black",
-      //   },
-      // }),
-
       placeholder: (styles) => ({
         ...styles,
         color: "#B2B3B5",
@@ -42,9 +33,6 @@ const options = [
 ];
 
 const Index = () => {
-  const [isOpenState, setIsOpenState] = useState(false);
-  const [isOpenCity, setIsOpenCity] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(false);
   const [stateAndCityData, setStateAndCity] = useState("");
   const [selectStatesData, setSelectStatesData] = useState();
@@ -52,31 +40,18 @@ const Index = () => {
   const [city, setCity] = useState();
   const [cityOptionValues, setCityOptionValues] = useState();
   const [cityValues, setCityValues] = useState();
-
+  const [isDisabled, setIsDisabled] = useState(true);
   const [age, setAge] = useState("00");
-  // Form Values
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
-  const [confirmPassword, setconfirmPassword] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
   const [dateofbirth, setdateofbirth] = useState("");
-  const [acmlUsername, setacmlUsername] = useState("");
-  const [gender, setGender] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [mobileVerify, setMobileVerify] = useState("Send Again");
-  //mobile input
+  const [gender, setGender] = useState("Male");
+  const [mobileVerify, setMobileVerify] = useState("");
   const [verify, setVerify] = useState(false);
   const [verifyNo, setVerifyNo] = useState("");
   const [errorFileSize, setErrorFileSize] = useState("");
   const [errorAge, setErrorAge] = useState("");
   const [errorState, setErrorState] = useState("");
   const [errorCity, setErrorCity] = useState("");
-
-  const [fileData, setFileData] = useState({
-    banner_image: "",
-  });
 
   const {
     register,
@@ -85,21 +60,27 @@ const Index = () => {
     setValue,
   } = useForm();
 
-  console.log("errors", errors);
-
   useEffect(() => {
-    axios
-      .get(`https://ekpedekzindgi.demo1.bytestechnolab.com/api/state-city`)
-      .then((response) => {
-        return response.data;
-      })
-      .then((data) => {
-        setStateAndCity(data?.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data.error);
-      });
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      axios
+        .get(`${apiconfig?.apiEndpoint}state-city`)
+        .then((response) => {
+          return response.data;
+        })
+        .then((data) => {
+          setStateAndCity(data?.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data.error);
+        });
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
     if (stateAndCityData && stateAndCityData.length > 0) {
@@ -125,47 +106,43 @@ const Index = () => {
     }
   }, [stateAndCityData, stateValue, city]);
 
-  
   const verifyFunc = () => {
     setVerify(true);
-    const data = {mobile_no: phoneNumber}
+    const data = { mobile_no: phoneNumber };
     axios
-        .post(`https://ekpedekzindgi.demo1.bytestechnolab.com/api/verify-mobile-sms`,data)
-        .then((response) => {
-            return response.data;
-        })
-        .catch((error) => {
-            console.log(error.response.data.error);
-        });
+      .post(`${apiconfig?.apiEndpoint}verify-mobile-sms`, data)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+      });
     document.getElementById("mobile_no").value = "";
-}
+  };
 
-const trackVerify = (e) => {
+  const trackVerify = (e) => {
     if (e.target.value.length == 4) {
-        setVerifyNo(e.target.value)
-        mobileVerification();
+      setVerifyNo(e.target.value);
+      mobileVerification(e.target.value);
     }
-}
-const mobileVerification = () => {
-    const data = {mobile_no: phoneNumber, verification_code: verifyNo }
-    axios
-        .post(`https://ekpedekzindgi.demo1.bytestechnolab.com/api/verify-mobile`,data)
-        .then((response) => {
-            return response.data;
-        })
-        .then((data) => {
-            setMobileVerify("Verified");
-        })  
-        .catch((error) => {
-            console.log(error.response.data.error);
-        });
-}
+  };
 
-  const handleClick = () => {
-    // SweetAlert.success(
-    //   "Thank you for adding your response",
-    //   "./images/logo.svg"
-    // );
+  const mobileVerification = (verificationCode) => {
+    const data = {
+      mobile_no: phoneNumber,
+      verification_code: verificationCode,
+    };
+    axios
+      .post(`${apiconfig?.apiEndpoint}verify-mobile`, data)
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        setMobileVerify(data?.message);
+      })
+      .catch((error) => {
+        console.log(error.response.data.error);
+      });
   };
 
   const ageCalculation = (e) => {
@@ -180,63 +157,46 @@ const mobileVerification = () => {
     }
   };
   const onSubmit = (data) => {
-    if (age === "00") {
-      setErrorAge("please select age");
-    }
-
-    if (stateValue === null || stateValue === undefined) {
-      setErrorState("please select state");
-    }
-    if (cityValue === null || cityValue === undefined) {
-      setErrorCity("please select city");
-    }
+    setLoading(true);
 
     var formdata = new FormData();
-    formdata.append("first_name", JSON.stringify(data?.firstName));
+    formdata.append("first_name", data?.firstName);
     formdata.append("last_name", data?.lastName);
     formdata.append("age", age);
     formdata.append("dob", dateofbirth);
     formdata.append("gender", gender);
     formdata.append("state", stateValue?.id);
-    formdata.append("city", cityValue);
+    formdata.append("city", cityValues);
     formdata.append("pin_code", data?.pincode);
-    formdata.append("mobile_no", data?.mobileNo);
+    formdata.append("mobile_no", phoneNumber);
     formdata.append("image", data?.banner_image);
     axios
-      .post(
-        "https://ekpedekzindgi.demo1.bytestechnolab.com/api/registarion",
-        formdata
-      )
+      .post(`${apiconfig?.apiEndpoint}registarion`, formdata)
       .then((data) => {
-        // debugger;
+        setLoading(false);
+        if (data?.data?.success === false) {
+          console.info(data?.data?.message);
+          SweetAlert.error(data?.data?.message, data?.data?.message);
+          return false;
+        }
+
+        SweetAlert.success(
+          "Thank you for adding your response",
+          "./epez-loader.gif"
+        );
       })
       .catch((error) => {
-        // debugger;
+        setLoading(false);
       });
-
-    console.log("ddddddddddddddd", {
-      ...data,
-      banner_image: undefined,
-      gender,
-      city: cityValue,
-      state: stateValue?.name,
-      age,
-      dateofbirth,
-      image: {
-        files: [fileData?.banner_image],
-      },
-    });
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log(file, "file");
     const fileSizeKb = file.size / 10240;
     if (file && fileSizeKb > 10240) {
       setErrorFileSize(true);
       return;
     } else {
-      //   setFileData({ ...fileData, banner_image: file });
       setValue("banner_image", file, { shouldValidate: true });
       setErrorFileSize(false);
     }
@@ -245,13 +205,6 @@ const mobileVerification = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-6 mb-6 lg:grid-cols-4 sm:grid-cols-2">
-        {/* <div>
-        <Select
-        defaultValue={selectedOption}
-        onChange={setSelectedOption}
-        options={options}
-      />
-        </div> */}
         <div className="relative">
           <label
             htmlFor="first_name"
@@ -263,13 +216,26 @@ const mobileVerification = () => {
             type="text"
             id="first_name"
             name="firstName"
-            {...register("firstName", { required: true })}
+            {...register("firstName", {
+              required: {
+                value: true,
+                message: "Firstname is required",
+              },
+              minLength: {
+                value: 2,
+                message: "Firstname is too short",
+              },
+              maxLength: {
+                value: 100,
+                message: "Firstname is too long",
+              },
+            })}
             className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4"
             placeholder="e.g. Meet"
           />
           <div className="invalid-feedback" style={{ display: "block" }}>
             {errors.firstName && (
-              <p style={{ color: "#e50000" }}>First Name is required</p>
+              <p style={{ color: "#e50000" }}>{errors?.firstName?.message}</p>
             )}
           </div>
         </div>
@@ -284,13 +250,26 @@ const mobileVerification = () => {
             type="text"
             id="last_name"
             name="lastName"
-            {...register("lastName", { required: true })}
+            {...register("lastName", {
+              required: {
+                value: true,
+                message: "Lastname is required",
+              },
+              minLength: {
+                value: 2,
+                message: "Lastname is too short",
+              },
+              maxLength: {
+                value: 100,
+                message: "Lastname is too long",
+              },
+            })}
             className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4"
             placeholder="e.g. Patel"
           />
           <div className="invalid-feedback" style={{ display: "block" }}>
             {errors.lastName && (
-              <p style={{ color: "#e50000" }}>Last Name is required</p>
+              <p style={{ color: "#e50000" }}>{errors?.lastName?.message}</p>
             )}
           </div>
         </div>
@@ -306,6 +285,7 @@ const mobileVerification = () => {
               {age}
             </span>
             <input
+              required
               type="date"
               id="age"
               name="dob"
@@ -331,37 +311,35 @@ const mobileVerification = () => {
             Gender
           </label>
           <div className="flex gender-select">
-            {/* <div onClick={() => setGender("male")} className={`${gender === 'male' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Male</div>
-                        <div onClick={() => setGender("female")} className={`${gender === 'female' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 mr-4 cursor-pointer`}>Female</div>
-                        <div onClick={() => setGender("others")} className={`${gender === 'others' ? 'bg-[#034729] text-white' : 'text-[#AAA895]'} input-field border border-[#CFCDB4] font-normal text-sm text-center rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 cursor-pointer`}>Others</div> */}
-
-            <label class="rounded-0 text-white">
+            <label className="rounded-0 text-white">
               <input
                 type="radio"
                 name="toggle"
-                class="d-none"
-                checked
-                onClick={() => setGender("Male")}
+                className="d-none"
+                checked={gender === "Male"}
+                onChange={() => setGender("Male")}
               />
-              <span class="text-center d-block py-3">Male</span>
+              <span className="text-center d-block py-3">Male</span>
             </label>
-            <label class="rounded-0 text-white">
+            <label className="rounded-0 text-white">
               <input
                 type="radio"
                 name="toggle"
-                class="d-none"
-                onClick={() => setGender("Female")}
+                className="d-none"
+                checked={gender === "Female"}
+                onChange={() => setGender("Female")}
               />
-              <span class="text-center d-block py-3">Female</span>
+              <span className="text-center d-block py-3">Female</span>
             </label>
-            <label class="rounded-0 text-white">
+            <label className="rounded-0 text-white">
               <input
                 type="radio"
                 name="toggle"
-                class="d-none"
-                onClick={() => setGender("Others")}
+                className="d-none"
+                checked={gender === "others"}
+                onChange={() => setGender("others")}
               />
-              <span class="text-center d-block py-3">Others</span>
+              <span className="text-center d-block py-3">Others</span>
             </label>
           </div>
         </div>
@@ -377,12 +355,14 @@ const mobileVerification = () => {
             placeholder="select state value"
             className="stylingSelect"
             // setStateValue
+            onInputChange={(e) => setIsDisabled(false)}
             onChange={(e) => setStateValue({ name: e?.name, id: e.id })}
             options={selectStatesData}
             components={{
               IndicatorSeparator: () => null,
             }}
             styles={colourStyles}
+            required
           />
           <div className="invalid-feedback" style={{ display: "block" }}>
             {errorState && <p style={{ color: "red" }}>{errorState}</p>}
@@ -403,15 +383,16 @@ const mobileVerification = () => {
           <Select
             placeholder="select city value"
             className="stylingSelect"
+            isDisabled={isDisabled}
             options={cityOptionValues}
             onChange={(e) => {
-              // debugger;
               setCityValues(e.value);
             }}
             components={{
               IndicatorSeparator: () => null,
             }}
             styles={colourStyles}
+            required
           />
           <div className="invalid-feedback" style={{ display: "block" }}>
             {errorCity && <p style={{ color: "red" }}>{errorCity}</p>}
@@ -434,17 +415,13 @@ const mobileVerification = () => {
                 value: true,
                 message: "Pincode is required",
               },
-              // pattern: {
-              //     value: /^[0-9+-]+$/,
-              //     message: "This is not a valid pincode to me, try again!"
-              // },
               minLength: {
                 value: 6,
-                message: "Pincode is too short",
+                message: "Pincode must be 6 digit!",
               },
               maxLength: {
                 value: 6,
-                message: "Now it's too damn long",
+                message: "Pincode must be 6 digit!",
               },
             })}
             className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4"
@@ -457,50 +434,75 @@ const mobileVerification = () => {
           </div>
         </div>
         <div className="relative">
-        <div className="change-number-wrap flex justify-between under-verifying">
+          <div className="change-number-wrap flex justify-between under-verifying">
             <label
               htmlFor="mobile_no"
               className="block mb-4 text-base font-semibold text-[#034729]"
             >
-              Mobile No
+              {verify == false ? "Mobile No" : "verification Code"}
             </label>
-            {verify == true ? <span className="change-number"  onClick={() => setVerify(false)}>Change Number</span> : null}
-        </div>
-            { verify == false ? <>
-            <div className='relative'>
+
+            {verify == true ? (
+              <span className="change-number" onClick={() => setVerify(false)}>
+                Change Number
+              </span>
+            ) : null}
+          </div>
+          {verify == false ? (
+            <>
+              <div className="relative">
                 <input
-                    min={0}
-                    type="number"
-                    id="mobile_no"
-                    onChange={(e) => setphoneNumber(e.target.value)}
-                    name='mobileNo'
-                    className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16" placeholder="10 Digit mobile no" />
-                <div className='absolute inset-y-0 right-0 flex items-center pl-3 bg-transparent text-[#AAA895] font-normal text-sm p-4 cursor-pointer underline'>
-                    {!phoneNumber ? <button disabled>verify</button> : <button onClick={() => verifyFunc()}>verify</button>}
+                  min={0}
+                  type="number"
+                  id="mobile_no"
+                  onChange={(e) => setphoneNumber(e.target.value)}
+                  name="mobileNo"
+                  className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16"
+                  placeholder="10 Digit mobile no"
+                  required
+                />
+                <div className="absolute inset-y-0 right-0 flex items-center pl-3 bg-transparent text-[#AAA895] font-normal text-sm p-4 cursor-pointer underline">
+                  {!phoneNumber ? (
+                    <button disabled>verify</button>
+                  ) : (
+                    <button onClick={() => verifyFunc()}>verify</button>
+                  )}
                 </div>
-            </div>
-            <div className='invalid-feedback' style={{ display: 'block' }}>
-                {errors.mobileNo && <p style={{ color: 'red' }}>{errors?.mobileNo?.message}</p>}
-            </div></> : <>
-            <div className="relative">
+              </div>
+              <div className="invalid-feedback" style={{ display: "block" }}>
+                {errors.mobileNo && (
+                  <p style={{ color: "red" }}>{errors?.mobileNo?.message}</p>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="relative">
                 <input
-                    min={0}
-                    onChange={(e) => trackVerify(e)}
-                    type="number"
-                    id="verify_no"
-                    name='verifyNo'
-                    className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16" placeholder="Auto verification code" />
-                <div className="absolute inset-y-0 right-0 flex items-center pl-3 bg-transparent text-[#aaa895] font-normal text-sm p-4 cursor-pointer underline">
-                    {mobileVerify}
+                  min={0}
+                  onChange={(e) => trackVerify(e)}
+                  type="number"
+                  id="verify_no"
+                  name="verifyNo"
+                  className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16"
+                  placeholder="Auto verification code"
+                  required
+                />
+                <div className="absolute inset-y-0 right-0 flex items-center pl-3 bg-transparent text-[#aaa895] font-normal text-sm p-4">
+                  {mobileVerify}
                 </div>
-            </div>
-            <div className="invalid-feedback" style={{ display: "block" }}>
-               {errors.verifyNo && (
-                 <p style={{ color: "#e50000" }}>{errors?.verifyNo?.message}</p>
-               )}
-            </div></>}
+              </div>
+              <div className="invalid-feedback" style={{ display: "block" }}>
+                {errors.verifyNo && (
+                  <p style={{ color: "#e50000" }}>
+                    {errors?.verifyNo?.message}
+                  </p>
+                )}
+              </div>
+            </>
+          )}
         </div>
-        </div>
+      </div>
       <div className="file-upload-wrap flex flex-wrap items-center justify-center w-full mb-6 z-10">
         <label className="w-full block mb-4 text-base font-semibold text-[#034729]">
           Add Photo
@@ -525,13 +527,8 @@ const mobileVerification = () => {
             onChange={handleImageChange}
             className="absolute w-full h-full opacity-0"
           />
-          {/* <div className='file-upload-load'>
-                        <img src="../../../epez-loader.gif" alt="File Upload Loader" />
-                    </div> */}
         </label>
-        <div className="invalid-feedback" style={{ display: "block" }}>
-          {/* {errors?.image && "Banner image is required."} */}
-        </div>
+        <div className="invalid-feedback" style={{ display: "block" }}></div>
       </div>
       <div className="flex justify-end form-btn">
         <button
@@ -544,7 +541,6 @@ const mobileVerification = () => {
         {!loading ? (
           <button
             type="submit"
-            onClick={handleClick}
             className="text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2"
           >
             Save to Continue
@@ -553,12 +549,12 @@ const mobileVerification = () => {
           <button
             disabled
             type="button"
-            class="text-white bg-[#034729] rounded-lg border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2"
+            className="text-white bg-[#034729] rounded-lg border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2"
           >
             <svg
               aria-hidden="true"
               role="status"
-              class="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600"
+              className="inline w-4 h-4 mr-3 text-gray-200 animate-spin dark:text-gray-600"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

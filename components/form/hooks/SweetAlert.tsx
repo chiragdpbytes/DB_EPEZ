@@ -18,7 +18,7 @@ const SweetAlert = {
     error: (title: string, text?: string) => {
       return Swal.fire({
         icon: 'error',
-        title : 'text-text',
+        title : 'Error',
         text,
       });
     },
