@@ -227,8 +227,8 @@ body{
   background-color: #efeee5;
   border-radius: 8px;
 }
-.stylingSelect .css-1pi5gif-control > div,
-.stylingSelect > div:last-of-type > div{
+.stylingSelect .css-1pi5gif-control>div.css-hlgwow, 
+.stylingSelect>div.css-1k9gly0-control>div.css-hlgwow{
   padding-left: 14px;
 }
 .stylingSelect > div:last-of-type > div > div.css-1xc3v61-indicatorContainer,

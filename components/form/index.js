@@ -55,6 +55,7 @@ const Index = (selectedLanguage) => {
   const [errorState, setErrorState] = useState("");
   const [errorCity, setErrorCity] = useState("");
   const [resetData, setResetData] = useState(false);
+  const [fileName, setFileName] = useState("Max Upload Size upto 10MB")
 
   const {
     register,
@@ -211,6 +212,7 @@ const Index = (selectedLanguage) => {
     } else {
       setValue("banner_image", file, { shouldValidate: true });
       setErrorFileSize(false);
+      setFileName(file.name)
     }
   };
 
@@ -527,11 +529,16 @@ const Index = (selectedLanguage) => {
           className="relative flex flex-col items-center justify-center w-full h-40 border-l border-t border-r border-b border-[#034729] border-dashed rounded-lg cursor-pointer bg-transparent p-2 p-3"
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-5">
-            <img src="../../../Upload.svg" alt="upload" className="mb-4" />
+            {
+                fileName == "Max Upload Size upto 10MB" ? <img src="../../../Upload.svg" alt="upload" className="mb-4" /> : <img src="../../../checkmark-transparent.gif" alt="Image Uploaded" width="60" height='60' className="mb-4" />
+            }
             <p className="font-semibold text-[#034729]">
               {language.uploadLabel} <u>{language.uploadLink}</u>
             </p>
-            <p className="text-sm text-[#AAA895]">Max upload size upto 10 MB</p>
+            {
+                fileName == "Max Upload Size upto 10MB" ? <p className="text-sm text-[#AAA895]">{fileName}</p> : <p className="text-sm text-[#034729]">{fileName}</p>
+            }
+            
             {/* <p className="text-sm text-[#AAA895] h-5 overflow-hidden">man-enjoying-indoor-farming.jpg</p> */}
           </div>
           <input
