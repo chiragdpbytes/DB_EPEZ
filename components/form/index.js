@@ -205,7 +205,7 @@ const Index = (selectedLanguage) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const fileSizeKb = file.size / 10240;
+    const fileSizeKb = file.size / 1024;
     if (file && fileSizeKb > 10240) {
       setErrorFileSize(true);
       return;
@@ -537,6 +537,9 @@ const Index = (selectedLanguage) => {
             </p>
             {
                 fileName == "Max Upload Size upto 10MB" ? <p className="text-sm text-[#AAA895]">{fileName}</p> : <p className="text-sm text-[#034729]">{fileName}</p>
+            }
+            {
+                errorFileSize && <p className="text-sm text-[#ff0000]">File Size is More than 10MB</p>
             }
             
             {/* <p className="text-sm text-[#AAA895] h-5 overflow-hidden">man-enjoying-indoor-farming.jpg</p> */}
