@@ -37,18 +37,20 @@ export const languageOptions = [
 export default function Home() {
   const [isSearchable, setIsSearchable] = useState(true);
   const [language, setLanguage] = useState(languageOptions[0]);
+  var selectedLogo = "./logo.svg";
   var selectedLanguage = "";
 
   Object.keys(locales).map((key) => {
     if (key == language.value) {
       selectedLanguage = locales[key];
+      selectedLogo = selectedLanguage.logoLabel;
     }
   });
   return (
     <main>
       <div className="container">
         <div className="flex justify-between mt-4 mb-6">
-          <img src="./logo.svg" alt="logo" />
+          <img src={selectedLogo} alt="logo" />
           <div className="language-select flex items-center gap-5 cursor-pointer">
             {/* <span className='text-base font-semibold	text-[#034729]'>English</span> */}
             <Select
