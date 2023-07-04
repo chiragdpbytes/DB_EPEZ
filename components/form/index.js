@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SweetAlert from "./hooks/SweetAlert";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
@@ -58,6 +58,8 @@ const Index = (selectedLanguage) => {
   const [fileName, setFileName] = useState("Max Upload Size upto 10MB")
   const [errorFileType, setErrorFileType] = useState("");
   const [selectStatesDefaultData, setSelectStatesDefaultData] = useState();
+  const selectInputRefState = useRef();
+  const selectInputRefCity = useRef();
 
   const [errorMessage, setErrorMessage] = useState('')
 // console.log("mobileVerify",mobileVerify)
@@ -127,6 +129,7 @@ const Index = (selectedLanguage) => {
 
   const verifyFunc = () => {
     setVerify(true);
+    setMobileVerify('');
     const data = { mobile_no: phoneNumber };
     axios
       .post(`${apiconfig?.apiEndpoint}verify-mobile-sms`, data)
@@ -204,6 +207,9 @@ const Index = (selectedLanguage) => {
 
         if (data?.data?.success === true) {
           setResetData(true);
+          setFileName("Max Upload Size upto 10MB");
+          handleManageVerify();
+          onClear();
         }
 
         SweetAlert.success(
@@ -252,12 +258,19 @@ const Index = (selectedLanguage) => {
   const handleManageVerify = () =>{
     setVerify(false);
     setErrorFileType("");
+    setMobileVerify("Verify");
+    document.getElementById("verify_no").value = "";
   }
 
   const handlePhoneSubmit = (e) => {
     setphoneNumber(e)
 
   }
+  
+  const onClear = () => {
+    selectInputRefState.current.clearValue();
+    selectInputRefCity.current.clearValue();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -412,12 +425,13 @@ const Index = (selectedLanguage) => {
           <Select
             placeholder="select state value"
             className="stylingSelect"
+            ref={selectInputRefState}
             defaultValue={selectStatesDefaultData && selectStatesDefaultData}
               // value={selectStatesDefaultData && selectStatesDefaultData[0]}
             onInputChange={(e) => setIsDisabled(false)}
             onChange={(e) => {
-              setStateValue({ name: e?.name, id: e.id })
-
+              setStateValue({ name: e?.name, id: e?.id })
+              selectInputRefCity.current.clearValue();
             }}
             options={selectStatesData}
             components={{
@@ -444,10 +458,11 @@ const Index = (selectedLanguage) => {
           <Select
             placeholder="select city value"
             className="stylingSelect"
+            ref={selectInputRefCity}
             isDisabled={isDisabled}
             options={cityOptionValues}
             onChange={(e) => {
-              setCityValues(e.value);
+              setCityValues(e?.value);
             }}
             components={{
               IndicatorSeparator: () => null,
@@ -626,6 +641,10 @@ const Index = (selectedLanguage) => {
             setResetData(true);
             setFileName("Max Upload Size upto 10MB");
             setErrorFileType("");
+            setErrorMessage("");
+            setVerify(false);
+            setMobileVerify("Verify");
+            onClear();
           }}
           type="reset"
           className="text-[#AAA895] font-medium rounded-lg text-base px-5 py-2.5 mr-2 mb-2 hover:bg-[#034729] hover:text-white"
@@ -638,9 +657,9 @@ const Index = (selectedLanguage) => {
           
             type="submit"
             className={`${`text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2`} 
-            ${mobileVerify !== "Verified!" && `pointer-events-none`}
-            ${fileName === 'Max Upload Size upto 10MB' && `pointer-events-none`}
-            ${errorMessage !== '' && `pointer-events-none`}
+            ${mobileVerify !== "Verified!" && `pointer-events-none opacity-70`}
+            ${fileName === 'Max Upload Size upto 10MB' && `pointer-events-none opacity-70`}
+            ${errorMessage !== '' && `pointer-events-none opacity-70`}
               ` }
           >
             Save to Continue
