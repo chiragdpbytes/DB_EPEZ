@@ -56,6 +56,11 @@ const Index = (selectedLanguage) => {
   const [errorCity, setErrorCity] = useState("");
   const [resetData, setResetData] = useState(false);
   const [fileName, setFileName] = useState("Max Upload Size upto 10MB")
+  const [errorFileType, setErrorFileType] = useState("");
+  const [selectStatesDefaultData, setSelectStatesDefaultData] = useState();
+
+  const [errorMessage, setErrorMessage] = useState('')
+// console.log("mobileVerify",mobileVerify)
 
   const {
     register,
@@ -64,6 +69,10 @@ const Index = (selectedLanguage) => {
     setValue,
     reset,
   } = useForm();
+
+
+  
+
 
   useEffect(() => {
     fetchData();
@@ -80,21 +89,26 @@ const Index = (selectedLanguage) => {
           setStateAndCity(data?.data);
         })
         .catch((error) => {
-          console.log(error.response.data.error);
+          // console.log(error.response.data.error);
         });
     } catch (error) {
-      console.log("Error fetching data:", error);
+      // console.log("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
     if (stateAndCityData && stateAndCityData.length > 0) {
       var temp = [];
+      var tempDefault = [];
       stateAndCityData?.map((data) => {
         temp.push({ value: data?.name, label: data?.name, id: data?.id });
+        tempDefault.push({ value: data?.name, label: data?.name });
+
       });
       setSelectStatesData(temp);
+      setSelectStatesDefaultData([tempDefault[0]]);
     }
+
     if (stateValue) {
       for (let i in stateAndCityData) {
         if (stateAndCityData[i]?.id === stateValue?.id) {
@@ -120,7 +134,7 @@ const Index = (selectedLanguage) => {
         return response.data;
       })
       .catch((error) => {
-        console.log(error.response.data.error);
+        // console.log(error.response.data.error);
       });
     document.getElementById("mobile_no").value = "";
   };
@@ -146,7 +160,7 @@ const Index = (selectedLanguage) => {
         setMobileVerify(data?.message);
       })
       .catch((error) => {
-        console.log(error.response.data.error);
+        // console.log(error.response.data.error);
       });
   };
 
@@ -164,6 +178,8 @@ const Index = (selectedLanguage) => {
   const onSubmit = (data) => {
     setLoading(true);
 
+    // console.log("img", data?.banner_image)
+
     var formdata = new FormData();
     formdata.append("first_name", data?.firstName);
     formdata.append("last_name", data?.lastName);
@@ -180,7 +196,8 @@ const Index = (selectedLanguage) => {
       .then((data) => {
         setLoading(false);
         if (data?.data?.success === false) {
-          console.info(data?.data?.message);
+          reset();
+          // console.info(data?.data?.message);
           SweetAlert.error(data?.data?.message, data?.data?.message);
           return false;
         }
@@ -206,15 +223,41 @@ const Index = (selectedLanguage) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const fileSizeKb = file.size / 1024;
-    if (file && fileSizeKb > 10240) {
-      setErrorFileSize(true);
+    const validExtensions = ['png','jpeg','jpg']
+    const fileExtension = file.type.split('/')[1]
+    const ifValidImgType = validExtensions.includes(fileExtension)
+    if(!ifValidImgType){
+      setErrorFileType("File Type Not Allowed")
+      setErrorMessage('File Type Not Allowed')
       return;
-    } else {
-      setValue("banner_image", file, { shouldValidate: true });
-      setErrorFileSize(false);
-      setFileName(file.name)
+    }else{
+      if (file && fileSizeKb > 10240) {
+        setErrorFileSize(true);
+        setErrorMessage("Max Upload Size upto 10MB")
+        return;
+      } else {
+        setValue("banner_image", file, { shouldValidate: true });
+        setErrorFileSize(false);
+        setFileName(file.name);
+        setErrorFileType("");
+        setErrorMessage('')
+      }
     }
+    
+   
   };
+
+  // console.log('error Message: ', errorMessage)
+
+  const handleManageVerify = () =>{
+    setVerify(false);
+    setErrorFileType("");
+  }
+
+  const handlePhoneSubmit = (e) => {
+    setphoneNumber(e)
+
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -369,15 +412,18 @@ const Index = (selectedLanguage) => {
           <Select
             placeholder="select state value"
             className="stylingSelect"
-            // setStateValue
+            defaultValue={selectStatesDefaultData && selectStatesDefaultData}
+              // value={selectStatesDefaultData && selectStatesDefaultData[0]}
             onInputChange={(e) => setIsDisabled(false)}
-            onChange={(e) => setStateValue({ name: e?.name, id: e.id })}
+            onChange={(e) => {
+              setStateValue({ name: e?.name, id: e.id })
+
+            }}
             options={selectStatesData}
             components={{
               IndicatorSeparator: () => null,
             }}
             styles={colourStyles}
-            required
           />
           <div className="invalid-feedback" style={{ display: "block" }}>
             {errorState && <p style={{ color: "red" }}>{errorState}</p>}
@@ -407,7 +453,6 @@ const Index = (selectedLanguage) => {
               IndicatorSeparator: () => null,
             }}
             styles={colourStyles}
-            required
           />
           <div className="invalid-feedback" style={{ display: "block" }}>
             {errorCity && <p style={{ color: "red" }}>{errorCity}</p>}
@@ -460,11 +505,12 @@ const Index = (selectedLanguage) => {
             </label>
 
             {verify == true ? (
-              <span className="change-number" onClick={() => setVerify(false)}>
+              <span className="change-number" onClick={handleManageVerify}>
                 {language.changeMobileLabel}
               </span>
             ) : null}
           </div>
+          {/* disabled={this.state.example.has_a_promotion === true ? true : false} */}
           {verify == false ? (
             <>
               <div className="relative">
@@ -472,11 +518,25 @@ const Index = (selectedLanguage) => {
                   min={0}
                   type="number"
                   id="mobile_no"
-                  onChange={(e) => setphoneNumber(e.target.value)}
+                  // onChange={(e) => setphoneNumber(e.target.value)}
+                  {...register("mobileNo", {
+                    required: {
+                      value: true ,
+                      message: "mobileNo is required",
+                    },
+                    pattern: {
+                      value: /^\d{10}$/,
+                      message: "MobileNo should be exactly 10 digits",
+                    },
+                  })}
                   name="mobileNo"
                   className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16"
                   placeholder="10 Digit mobile no"
-                  required
+                  onChange={(e) =>{ 
+                    handlePhoneSubmit(e?.target?.value);
+                    setValue('mobileNo',e?.target?.value,{shouldValidate:true})
+                  }}
+                  
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pl-3 bg-transparent text-[#AAA895] font-normal text-sm p-4 cursor-pointer underline">
                   {!phoneNumber ? (
@@ -487,7 +547,7 @@ const Index = (selectedLanguage) => {
                 </div>
               </div>
               <div className="invalid-feedback" style={{ display: "block" }}>
-                {errors.mobileNo && (
+                {errors?.mobileNo && (
                   <p style={{ color: "red" }}>{errors?.mobileNo?.message}</p>
                 )}
               </div>
@@ -499,6 +559,7 @@ const Index = (selectedLanguage) => {
                   min={0}
                   onChange={(e) => trackVerify(e)}
                   type="number"
+                  disabled={mobileVerify === "Verified!" ? true : false}
                   id="verify_no"
                   name="verifyNo"
                   className="input-field bg-transparent border border-[#CFCDB4] text-[#034729] font-normal text-sm rounded-lg focus:outline-none focus:border-[#034729] block w-full p-4 pr-16"
@@ -530,17 +591,21 @@ const Index = (selectedLanguage) => {
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-5">
             {
-                fileName == "Max Upload Size upto 10MB" ? <img src="../../../Upload.svg" alt="upload" className="mb-4" /> : <img src="../../../checkmark-transparent.gif" alt="Image Uploaded" width="60" height='60' className="mb-4" />
+               errorMessage === '' && fileName !== 'Max Upload Size upto 10MB' ?  <img src="../../../checkmark-transparent.gif" alt="Image Uploaded" width="60" height='60' className="mb-4" /> : <img src="../../../Upload.svg" alt="upload" className="mb-4" />
             }
             <p className="font-semibold text-[#034729]">
               {language.uploadLabel} <u>{language.uploadLink}</u>
             </p>
             {
-                fileName == "Max Upload Size upto 10MB" ? <p className="text-sm text-[#AAA895]">{fileName}</p> : <p className="text-sm text-[#034729]">{fileName}</p>
+                errorMessage === '' ? <p className="text-sm text-[#AAA895]">{fileName}</p> :  <p  className="text-sm text-[#ff0000]">{errorMessage}</p>
             }
-            {
+           
+            {/* {
                 errorFileSize && <p className="text-sm text-[#ff0000]">File Size is More than 10MB</p>
             }
+            {
+                errorFileType && <p className="text-sm text-[#ff0000]">File Type Not Allowed</p>
+            } */}
             
             {/* <p className="text-sm text-[#AAA895] h-5 overflow-hidden">man-enjoying-indoor-farming.jpg</p> */}
           </div>
@@ -559,6 +624,8 @@ const Index = (selectedLanguage) => {
         <button
           onClick={() => {
             setResetData(true);
+            setFileName("Max Upload Size upto 10MB");
+            setErrorFileType("");
           }}
           type="reset"
           className="text-[#AAA895] font-medium rounded-lg text-base px-5 py-2.5 mr-2 mb-2 hover:bg-[#034729] hover:text-white"
@@ -568,8 +635,13 @@ const Index = (selectedLanguage) => {
 
         {!loading ? (
           <button
+          
             type="submit"
-            className="text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2"
+            className={`${`text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2`} 
+            ${mobileVerify !== "Verified!" && `pointer-events-none`}
+            ${fileName === 'Max Upload Size upto 10MB' && `pointer-events-none`}
+            ${errorMessage !== '' && `pointer-events-none`}
+              ` }
           >
             Save to Continue
           </button>
