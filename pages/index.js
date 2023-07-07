@@ -39,13 +39,19 @@ export default function Home() {
   const [language, setLanguage] = useState(languageOptions[0]);
   var selectedLogo = "./logo.svg";
   var selectedLanguage = "";
+  var languageKey = languageOptions[0]?.value;
 
   Object.keys(locales).map((key) => {
     if (key == language.value) {
+      languageKey = key;
       selectedLanguage = locales[key];
       selectedLogo = selectedLanguage.logoLabel;
     }
   });
+  let props = {
+    lang: selectedLanguage,
+    langKey: languageKey
+  }
   return (
     <main>
       <div className="container">
@@ -73,7 +79,7 @@ export default function Home() {
             along with the germinated plant/plants
           </h1>
         </div>
-        <Form lang={selectedLanguage} />
+        <Form {...props} />
       </div>
       <footer>
         <img src="./Footer.svg" alt="footer" height="100%" width="100%" />
