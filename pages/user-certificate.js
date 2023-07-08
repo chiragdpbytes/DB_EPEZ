@@ -26,11 +26,11 @@ const UserCertificate = () => {
               className="w-[139px] h-[125px] block text-center mx-auto"
             />
           </div>
-          <h2 className="main-heading text-center popup-title mt-[40px]">
+          <h2 className="main-heading text-center popup-title mt-[20px] md:mt-[40px]">
             Generate Your Certificate
           </h2>
 
-          <div className="relative mt-[40px] flex flex-col items-center">
+          <div className="relative mt-[20px] md:mt-[40px] flex flex-col items-center">
             <div className="change-number-wrap flex justify-between under-verifying">
               <label
                 htmlFor="mobile_no"
@@ -77,7 +77,7 @@ const UserCertificate = () => {
             </div>
           </div>
 
-          <div className="relative max-w-[574px] mx-auto mt-[60px]  ">
+          <div className="relative max-w-[574px] mx-auto mt-[20px] md:mt-[40px] ">
             <div className="change-number-wrap flex justify-center under-verifying">
               <label
                 htmlFor="mobile_no"
@@ -130,7 +130,7 @@ const UserCertificate = () => {
               </label>
             </div>
           </div>
-          <div className="mt-[40px] flex justify-center">
+          <div className="mt-[20px] md:mt-[40px] flex justify-center">
             <button
               className={
                 errors.mobileNo === undefined && mobileValue !== undefined
