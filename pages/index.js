@@ -187,8 +187,7 @@ export default function Home() {
         </div>
         <div className="flex justify-center mb-11">
           <h1 className="main-heading text-center 2xl:text-[32px] xl:text-2xl lg:text-xl md:text-lg text-lg font-bold	text-[#034729] w-[969px]">
-            Please fill your details and share a clear image of yourself/family
-            along with the germinated plant/plants
+            {selectedLanguage.bannerLabel}
           </h1>
         </div>
         <Form {...props} />

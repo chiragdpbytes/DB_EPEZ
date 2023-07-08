@@ -57,6 +57,7 @@ const Index = (props) => {
   const selectInputRefState = useRef();
   const selectInputRefCity = useRef();
 
+
   const {
     register,
     handleSubmit,
@@ -110,7 +111,6 @@ const Index = (props) => {
     }
     if (city) {
       var temp = [];
-      console.log("city", city);
       for (let i in city) {
         temp.push({ value: city[i]?.id, label: city[i]?.name });
       }
@@ -156,6 +156,7 @@ const Index = (props) => {
         const successTrue = response.data.success;
         if (successTrue === true) {
           setVerify(true);
+          
         }
         return response.data;
       })
@@ -615,7 +616,7 @@ const Index = (props) => {
                 {!phoneNumber ? (
                   <button disabled>verify</button>
                 ) : (
-                  <button onClick={() => verifyFunc()}>verify</button>
+                  <button onClick={handleSubmit(verifyFunc)}>verify</button>
                 )}
               </div>
             )}
@@ -710,6 +711,7 @@ const Index = (props) => {
         </label>
         <div className="invalid-feedback" style={{ display: "block" }}></div>
       </div>
+    
       <div className="flex justify-end form-btn">
         <button
           onClick={() => {
@@ -727,22 +729,17 @@ const Index = (props) => {
         >
           Reset
         </button>
-
         {!loading ? (
           <button
             type="submit"
             className={`${`text-white bg-[#034729] border border-[#034729] hover:bg-transparent hover:text-[#034729] font-semibold rounded-lg text-base px-5 py15 mb-2`} 
-            ${mobileVerify !== "Verified!" && `pointer-events-none opacity-70`}
-            ${
-              fileName === language.uploadSize &&
-              `pointer-events-none opacity-70`
-            }
-            ${errorMessage !== "" && `pointer-events-none opacity-70`}
-            ${cityErrorMessage !== "" && `pointer-events-none opacity-70`}
-
-            ${errors.firstName !== "" && `pointer-events-none opacity-70`}
-            ${errors.lastName !== "" && `pointer-events-none opacity-70`}
-            ${errors.pincode !== "" && `pointer-events-none opacity-70`}
+            ${mobileVerify !== "Verified!" && `pointer-events-none opacity-70 first`}
+            ${fileName === language.uploadSize &&`pointer-events-none opacity-70 second`}
+            ${errorMessage !== "" && `pointer-events-none opacity-70 third`}
+            ${cityErrorMessage !== "" && `pointer-events-none opacity-70 fourth`}
+            ${errors.firstName !== undefined && `pointer-events-none opacity-70 five`}
+            ${errors.lastName !== undefined && `pointer-events-none opacity-70 six`}
+            ${errors.pincode !== undefined && `pointer-events-none opacity-70 seven`}
               `}
           >
             Save to Continue

@@ -2,6 +2,7 @@
 const locales = {
   en: {
     logoLabel: "./logo.svg",
+    bannerLabel: "Please fill your details and share a clear image of yourself/family along with the germinated plant/plants",
     firstNameLabel: "First Name",
     firstNamePlaceholder: "e.g. Maharshi",
     lastNameLabel: "Last Name",
@@ -27,6 +28,7 @@ const locales = {
   },
   hi: {
     logoLabel: "./logo.svg",
+    bannerLabel: "कृपया अपना विवरण भरें और अंकुरित पौधे/पौधों के साथ अपनी/परिवार की एक स्पष्ट छवि साझा करें",
     firstNameLabel: "पहला नाम",
     firstNamePlaceholder: "उ. महर्षि",
     lastNameLabel: "उपनाम",
@@ -52,6 +54,7 @@ const locales = {
   },
   gu: {
     logoLabel: "./gujarati-logo.svg",
+    bannerLabel: "કૃપા કરીને તમારી વિગતો ભરો અને અંકુરિત છોડ સાથે તમારી/કુટુંબની સ્પષ્ટ છબી શેર કરો",
     firstNameLabel: "મૂળ નામ",
     firstNamePlaceholder: "ઉ. મહર્ષિ",
     lastNameLabel: "છેલ્લું નામ",
@@ -77,6 +80,7 @@ const locales = {
   },
   ma: {
     logoLabel: "./marathi-logo.svg",
+    bannerLabel: "कृपया तुमचे तपशील भरा आणि अंकुरित वनस्पतीं सह तुमची/कुटुंबाची स्पष्ट प्रतिमा शेअर करा",
     firstNameLabel: "पहिले नाव",
     firstNamePlaceholder: "उ. महर्षी",
     lastNameLabel: "आडनाव",
