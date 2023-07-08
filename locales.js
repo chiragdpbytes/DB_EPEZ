@@ -21,7 +21,7 @@ const locales = {
     uploadLabel: "Drag your files from device or",
     uploadLink: "Upload",
     uploadSize: "Max Upload Size upto 10MB",
-    fileTypeError: "",
+    fileTypeError: "File Type Not Allowed",
     changeMobileLabel: "Change Number",
     verificationMobileLabel: "OTP",
   },
