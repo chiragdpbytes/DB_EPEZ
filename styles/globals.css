@@ -137,6 +137,9 @@ body {
 .main-heading {
   line-height: 1.35 !important;
 }
+.main-heading.popup-title {
+  font-size: 2.292vw;
+}
 
 .input-field,
 .stylingSelect > .css-1k9gly0-control {
@@ -199,6 +202,7 @@ body {
   border: 1px solid #cfcdb4;
   background: #fff;
   height: 56px;
+  cursor: pointer;
 }
 .gender-select label span {
   display: block;
@@ -369,7 +373,25 @@ footer {
   .container {
     max-width: 1808px;
   }
+  
+  .main-heading.popup-title {
+    font-size: 44px;
+  }
 }
+@media (max-width: 1600px) {
+  label.block.mb-4.text-base.font-semibold.text-\[\#034729\],
+  .change-number,
+  .invalid-feedback p{
+    font-size: 13px !important;
+  }
+}
+@media only screen and (max-width: 1199px) and (min-width: 1024px) {
+  label.block.mb-4.text-base.font-semibold.text-\[\#034729\],
+  .change-number{
+    font-size: 10px !important;
+  }
+}
+
 @media (max-width: 1199px) {
   .main-heading {
     font-size: 29px !important;
