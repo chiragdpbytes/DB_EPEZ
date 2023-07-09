@@ -41,7 +41,7 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
 
-  console.log("languagelanguagelanguage", language);
+  // console.log("languagelanguagelanguage", language);
 
   var selectedLogo = "./logo.svg";
   var selectedLanguage = "";

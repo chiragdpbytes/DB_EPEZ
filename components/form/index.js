@@ -154,9 +154,11 @@ const Index = (props) => {
       .post(`${apiconfig?.apiEndpoint}verify-mobile-sms`, data)
       .then((response) => {
         const successTrue = response.data.success;
+        if (successTrue === false) {
+          SweetAlert.error(response?.data?.message, response?.data?.message);
+        }
         if (successTrue === true) {
           setVerify(true);
-          
         }
         return response.data;
       })
@@ -711,7 +713,7 @@ const Index = (props) => {
         </label>
         <div className="invalid-feedback" style={{ display: "block" }}></div>
       </div>
-    
+
       <div className="flex justify-end form-btn">
         <button
           onClick={() => {

@@ -1,7 +1,10 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { apiconfig } from "../components/form/hooks/apiconfig";
+import SweetAlert from "../components/form/hooks/SweetAlert";
 
-const UserCertificate = () => {
+const Certificate = () => {
   const [language, setLanguage] = useState("हिंदी");
 
   const {
@@ -14,6 +17,25 @@ const UserCertificate = () => {
   const mobileValue = getValues("mobileNo");
 
   const onSubmit = (data) => {
+    var formdata = new FormData();
+    formdata.append("language", language);
+    formdata.append("mobile_no", data.mobileNo);
+
+    axios
+      .post(`${apiconfig?.apiEndpoint}generate-certificate`, formdata)
+      .then((data) => {
+        if (data?.data?.success === false) {
+          SweetAlert.error(data?.data?.message, data?.data?.message);
+          return false;
+        } else {
+          if (data?.data?.message === "redirect") {
+            window.location.href = data?.data?.data;
+          }
+        }
+      })
+      .catch((error) => {
+        // console.log(error.response.data.error);
+      });
   };
 
   return (
@@ -152,4 +174,4 @@ const UserCertificate = () => {
   );
 };
 
-export default UserCertificate;
+export default Certificate;
