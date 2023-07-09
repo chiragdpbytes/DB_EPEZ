@@ -618,7 +618,7 @@ const Index = (props) => {
                 {!phoneNumber ? (
                   <button disabled>verify</button>
                 ) : (
-                  <button onClick={handleSubmit(verifyFunc)}>verify</button>
+                  <button type="button" onClick={verifyFunc}>verify</button>
                 )}
               </div>
             )}
