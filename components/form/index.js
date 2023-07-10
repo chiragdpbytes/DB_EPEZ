@@ -128,6 +128,7 @@ const Index = (props) => {
             label: stateAndCityData[i].city[i].name,
             id: stateAndCityData[i].city[i].id,
           });
+          console.log(selectStatesData);
           setSelectCityDefaultData(tempCity);
         }
       }
@@ -154,11 +155,9 @@ const Index = (props) => {
       .post(`${apiconfig?.apiEndpoint}verify-mobile-sms`, data)
       .then((response) => {
         const successTrue = response.data.success;
-        if (successTrue === false) {
-          SweetAlert.error(response?.data?.message, response?.data?.message);
-        }
         if (successTrue === true) {
           setVerify(true);
+          
         }
         return response.data;
       })
@@ -502,7 +501,7 @@ const Index = (props) => {
               className="stylingSelect"
               ref={selectInputRefCity}
               options={cityOptionValues}
-              defaultValue={selectCityDefaultData[0]}
+              // defaultValue={selectCityDefaultData[0]}
               onChange={(e) => {
                 if (e?.value === undefined) {
                   setCityErrorMessage("please select city");
@@ -713,7 +712,7 @@ const Index = (props) => {
         </label>
         <div className="invalid-feedback" style={{ display: "block" }}></div>
       </div>
-
+    
       <div className="flex justify-end form-btn">
         <button
           onClick={() => {
