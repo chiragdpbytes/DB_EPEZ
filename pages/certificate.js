@@ -99,7 +99,7 @@ const Certificate = () => {
             </div>
           </div>
 
-          <div className="relative max-w-[574px] mx-auto mt-[20px] md:mt-[40px] ">
+          <div className="relative max-w-[574px] mx-auto mt-[30px] md:mt-[40px] ">
             <div className="change-number-wrap flex justify-center under-verifying">
               <label
                 htmlFor="mobile_no"
