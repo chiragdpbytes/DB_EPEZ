@@ -3,6 +3,7 @@ const locales = {
   en: {
     logoLabel: "./logo.svg",
     bannerLabel: "Please fill your details and share a clear image of yourself/family along with the germinated plant/plants",
+    languageLabel:"Choose Language",
     firstNameLabel: "First Name",
     firstNamePlaceholder: "e.g. Maharshi",
     lastNameLabel: "Last Name",
@@ -29,6 +30,7 @@ const locales = {
   hi: {
     logoLabel: "./logo.svg",
     bannerLabel: "कृपया अपना विवरण भरें और अंकुरित पौधे/पौधों के साथ अपनी/परिवार की एक स्पष्ट छवि साझा करें",
+    languageLabel:"भाषा चुनें",
     firstNameLabel: "पहला नाम",
     firstNamePlaceholder: "उ. महर्षि",
     lastNameLabel: "उपनाम",
@@ -45,9 +47,9 @@ const locales = {
     mobileLabel: "मोबाइल नंबर",
     mobilePlaceholder:"दस अंकों का मोबाइल नंबर",
     photoLabel: "तस्वीर जोड़ो",
-    uploadLabel: "अपनी फ़ाइलें डिवाइस से खींचें या",
+    uploadLabel: "फोटो अपलोड करने के लिए यहाँ क्लिक करें",
     uploadLink: "अपलोड करें",
-    uploadSize:"अधिकतम अपलोड आकार 10 एमबी तक",
+    uploadSize:"अधिकतम 10 MB तक की फोटो ही स्वीकार की जाएगी",
     fileTypeError: "फ़ाइल प्रकार की अनुमति नहीं है",
     changeMobileLabel: "मोबाइल नंबर बदलें",
     verificationMobileLabel: "ओ.टी.पी",
@@ -55,6 +57,7 @@ const locales = {
   gu: {
     logoLabel: "./gujarati-logo.svg",
     bannerLabel: "કૃપા કરીને તમારી વિગતો ભરો અને અંકુરિત છોડ સાથે તમારી/કુટુંબની સ્પષ્ટ છબી શેર કરો",
+    languageLabel:"ભાષા પસંદ કરો",
     firstNameLabel: "મૂળ નામ",
     firstNamePlaceholder: "ઉ. મહર્ષિ",
     lastNameLabel: "છેલ્લું નામ",
@@ -81,6 +84,7 @@ const locales = {
   ma: {
     logoLabel: "./marathi-logo.svg",
     bannerLabel: "कृपया तुमचे तपशील भरा आणि अंकुरित वनस्पतीं सह तुमची/कुटुंबाची स्पष्ट प्रतिमा शेअर करा",
+    languageLabel:"भाषा निवडा",
     firstNameLabel: "पहिले नाव",
     firstNamePlaceholder: "उ. महर्षी",
     lastNameLabel: "आडनाव",

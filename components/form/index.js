@@ -684,7 +684,7 @@ const Index = (props) => {
               <img src="../../../Upload.svg" alt="upload" className="mb-4" />
             )}
             <p className="font-semibold text-[#034729]">
-              {language.uploadLabel} <u>{language.uploadLink}</u>
+              {language.uploadLabel}
             </p>
             {errorMessage === "" ? (
               <p className="text-sm text-[#AAA895]">{fileName}</p>

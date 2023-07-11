@@ -125,16 +125,6 @@ const Certificate = () => {
                   type="radio"
                   name="toggle"
                   className="d-none"
-                  checked={language === "English"}
-                  onChange={() => setLanguage("English")}
-                />
-                <span className="text-center d-block py-3">English</span>
-              </label>
-              <label className="rounded-0 text-white cursor-pointer">
-                <input
-                  type="radio"
-                  name="toggle"
-                  className="d-none"
                   checked={language === "ગુજરાતી"}
                   onChange={() => setLanguage("ગુજરાતી")}
                 />
@@ -149,6 +139,16 @@ const Certificate = () => {
                   onChange={() => setLanguage("मराठी")}
                 />
                 <span className="text-center d-block py-3">मराठी</span>
+              </label>
+              <label className="rounded-0 text-white cursor-pointer">
+                <input
+                  type="radio"
+                  name="toggle"
+                  className="d-none"
+                  checked={language === "English"}
+                  onChange={() => setLanguage("English")}
+                />
+                <span className="text-center d-block py-3">English</span>
               </label>
             </div>
           </div>

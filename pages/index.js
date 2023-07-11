@@ -98,7 +98,7 @@ export default function Home() {
                     />
                   </div>
                   <h2 className="main-heading text-center popup-title mt-[40px]">
-                    What&apos;s your preferred Language?
+                    {languageKey == "en" ? "Choose Language" : "Choose Language / "+selectedLanguage.languageLabel}
                   </h2>
                   <div className="relative max-w-[574px] mx-auto mt-[40px]">
                     <div className="flex gender-select">
@@ -111,18 +111,6 @@ export default function Home() {
                           checked={languageOptions[0].value === language.value}
                         />
                         <span className="text-center d-block py-3">हिंदी</span>
-                      </label>
-                      <label className="rounded-0 text-white">
-                        <input
-                          type="radio"
-                          name="toggle"
-                          className="d-none"
-                          onChange={(e) => setLanguage(languageOptions[1])}
-                          checked={languageOptions[1].value === language.value}
-                        />
-                        <span className="text-center d-block py-3">
-                          English
-                        </span>
                       </label>
                       <label className="rounded-0 text-white">
                         <input
@@ -145,6 +133,18 @@ export default function Home() {
                           onChange={() => setLanguage(languageOptions[3])}
                         />
                         <span className="text-center d-block py-3">मराठी</span>
+                      </label>
+                      <label className="rounded-0 text-white">
+                        <input
+                          type="radio"
+                          name="toggle"
+                          className="d-none"
+                          onChange={(e) => setLanguage(languageOptions[1])}
+                          checked={languageOptions[1].value === language.value}
+                        />
+                        <span className="text-center d-block py-3">
+                          English
+                        </span>
                       </label>
                     </div>
                   </div>
